@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_03_043636) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_05_125701) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -58,9 +58,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_03_043636) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "articles", force: :cascade do |t|
+    t.string "name"
+    t.boolean "is_public", default: true
+  end
+
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "line_item_count", default: 0, null: false
   end
 
   create_table "line_items", force: :cascade do |t|
@@ -91,6 +97,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_03_043636) do
     t.decimal "price", precision: 8, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "enabled", default: false
+    t.decimal "discount_price", default: "0.0"
+    t.string "permalink"
   end
 
   create_table "support_requests", force: :cascade do |t|
@@ -108,6 +117,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_03_043636) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
