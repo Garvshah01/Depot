@@ -60,7 +60,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_05_125701) do
 
   create_table "articles", force: :cascade do |t|
     t.string "name"
-    t.boolean "is_public?", default: true
+    t.boolean "is_public", default: true
   end
 
   create_table "carts", force: :cascade do |t|
