@@ -1,13 +1,13 @@
 class User < ApplicationRecord
 
+  EMAIL_REGEXP = /^[\w\.-]+@([\w-]+\.)+[\w-]{2,4}$/.freeze
   after_destroy :ensure_an_admin_remains
   validates :name, presence: true, uniqueness: true
   has_secure_password
-  validates :email, uniqueness: true
+  validates :email, uniqueness: true,allow_nil: true
   validates :email, format: {
-    with: %r{\A[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\Z}
+    with: EMAIL_REGEXP
   }
-
 
   class Error < StandardError
   end
