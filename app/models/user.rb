@@ -3,6 +3,11 @@ class User < ApplicationRecord
   after_destroy :ensure_an_admin_remains
   validates :name, presence: true, uniqueness: true
   has_secure_password
+  validates :email, uniqueness: true
+  validates :email, format: {
+    with: %r{\A[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\Z}
+  }
+
 
   class Error < StandardError
   end
