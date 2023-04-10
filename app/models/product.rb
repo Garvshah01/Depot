@@ -23,7 +23,6 @@ class Product < ApplicationRecord
   has_many :orders, through: :line_items
   before_destroy :ensure_not_referenced_by_any_line_item
 
-
   private
   def ensure_not_referenced_by_any_line_item
     unless line_items.empty?
@@ -33,17 +32,17 @@ class Product < ApplicationRecord
   end
 
   def validate_words_in_permalink
-    words = permalink.split '-'
-    if words.size < MINIMUM_PERMALINK_LENGTH
+    words_count = permalink.split('-').size
+    if words_count < MINIMUM_PERMALINK_LENGTH
       errors.add :permalink, "should not have words less than 3"
     end
   end
 
   def validate_words_in_description
-    words = description.split ' '
-    if words.size < MINIMUM_DESCRIPTION_LENGTH
+    words_count = description.split(' ').size
+    if words_count < MINIMUM_DESCRIPTION_LENGTH
       errors.add :description, "should not have words less than 5"
-    elsif words.size > MAXIMUM_DECRIPTION_LENGTH
+    elsif words_count > MAXIMUM_DECRIPTION_LENGTH
       errors.add :description, "should not have words greater than 10"
     end
   end
