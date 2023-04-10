@@ -2,19 +2,19 @@ class Product < ApplicationRecord
 
   PERMALINK_REGEXP =  %r{\A[a-z0-9-]+\Z}.freeze
 
-  # validates :title, :description, :image_url, presence: true
-  # validates :title, uniqueness: true
+  validates :title, :description, :image_url, presence: true
+  validates :title, uniqueness: true
   validates :image_url, allow_blank: true, url: true
-  # validates :permalink, format: {
-  #   with: PERMALINK_REGEXP,
-  #   message: 'should not contains any special characters'
-  # }
-  # validates :permalink, uniqueness: true, allow_nil: true
-  # validates :price, numericality: {greater_than_or_equal_to: 0.01}, if: :price
-  # validates :price, comparison: { greater_than: :discount_price },  allow_nil: true
-  # validates_with PriceValidator, if: :price
-  # validate :validate_words_in_permalink
-  # validate :validate_words_in_description
+  validates :permalink, format: {
+    with: PERMALINK_REGEXP,
+    message: 'should not contains any special characters'
+  }
+  validates :permalink, uniqueness: true, allow_nil: true
+  validates :price, numericality: {greater_than_or_equal_to: 0.01}, if: :price
+  validates :price, comparison: { greater_than: :discount_price },  allow_nil: true
+  validates_with PriceValidator, if: :price
+  validate :validate_words_in_permalink
+  validate :validate_words_in_description
 
   has_many :line_items
   has_many :orders, through: :line_items
