@@ -7,9 +7,9 @@ class User < ApplicationRecord
   validates :email, format: {
     with: URI::MailTo::EMAIL_REGEXP
   }
-  after_create :send_welcome_mail
-  around_update :ensure_not_admin
-  around_destroy :ensure_not_admin
+  after_create_commit :send_welcome_mail
+  before_update :ensure_not_admin
+  before_destroy :ensure_not_admin
   after_destroy :ensure_an_admin_remains
 
   class Error < StandardError
@@ -23,10 +23,10 @@ class User < ApplicationRecord
   end
 
   def ensure_not_admin
-    yield unless self.email == 'admin@depot.com'
+    throw :abort unless self.email == 'admin@depot.com'
   end
 
   def send_welcome_mail
-    UserMailer.with(user: self).welcome_email.deliver_now
+    UserMailer.with(user: self).welcome_email.deliver_later
   end
 end

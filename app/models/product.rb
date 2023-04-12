@@ -23,10 +23,8 @@ class Product < ApplicationRecord
   has_many :orders, through: :line_items
   before_destroy :ensure_not_referenced_by_any_line_item
 
-  after_initialize :set_name_default
-  before_save :set_discount_price
-  # after_commit
-
+  before_validation :set_name_default
+  before_validation :set_discount_price
 
   private
   def ensure_not_referenced_by_any_line_item
@@ -53,10 +51,10 @@ class Product < ApplicationRecord
   end
 
   def set_name_default
-    self.title = 'abc' unless self.title
+    self.title ||= 'abc'
   end
 
   def set_discount_price
-    self.discount_price = self.price if self.discount_price == 0.0
+    self.discount_price = price if discount_price == 0.0
   end
 end
