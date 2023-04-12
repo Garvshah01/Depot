@@ -1,12 +1,23 @@
 class Product < ApplicationRecord
 
+  PERMALINK_REGEXP =  %r{\A[a-z0-9-]+\Z}i.freeze
+  MINIMUM_PERMALINK_LENGTH = 3
+  MINIMUM_DESCRIPTION_LENGTH = 5
+  MAXIMUM_DECRIPTION_LENGTH = 10
+
   validates :title, :description, :image_url, presence: true
-  validates :price, numericality: {greater_than_or_equal_to: 0.01}
   validates :title, uniqueness: true
-  validates :image_url, allow_blank: true, format: {
-    with: %r{\.(gif|jpg|png)\z}i,
-    message: 'must be a URL for GIF, JPG or PNG images'
+  validates :image_url, url: true, allow_blank: true
+  validates :permalink, format: {
+    with: PERMALINK_REGEXP,
+    message: 'should not contains any special characters'
   }
+  validates :permalink, uniqueness: true, allow_nil: true
+  validates :price, numericality: {greater_than_or_equal_to: 0.01}, if: :price
+  validates :price, comparison: { greater_than: :discount_price },  allow_nil: true
+  validates_with PriceValidator, if: :price
+  validate :validate_words_in_permalink
+  validate :validate_words_in_description
 
   has_many :line_items
   has_many :orders, through: :line_items
@@ -20,4 +31,19 @@ class Product < ApplicationRecord
     end
   end
 
+  def validate_words_in_permalink
+    words_count = permalink.split('-').size
+    if words_count < MINIMUM_PERMALINK_LENGTH
+      errors.add :permalink, "should not have words less than 3"
+    end
+  end
+
+  def validate_words_in_description
+    words_count = description.split(' ').size
+    if words_count < MINIMUM_DESCRIPTION_LENGTH
+      errors.add :description, "should not have words less than 5"
+    elsif words_count > MAXIMUM_DECRIPTION_LENGTH
+      errors.add :description, "should not have words greater than 10"
+    end
+  end
 end
