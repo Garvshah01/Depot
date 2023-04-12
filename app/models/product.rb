@@ -1,10 +1,13 @@
 class Product < ApplicationRecord
 
-  PERMALINK_REGEXP =  %r{\A[a-z0-9-]+\Z}.freeze
+  PERMALINK_REGEXP =  %r{\A[a-z0-9-]+\Z}i.freeze
+  MINIMUM_PERMALINK_LENGTH = 3
+  MINIMUM_DESCRIPTION_LENGTH = 5
+  MAXIMUM_DECRIPTION_LENGTH = 10
 
   validates :title, :description, :image_url, presence: true
   validates :title, uniqueness: true
-  validates :image_url, allow_blank: true, url: true
+  validates :image_url, url: true, allow_blank: true
   validates :permalink, format: {
     with: PERMALINK_REGEXP,
     message: 'should not contains any special characters'
@@ -33,23 +36,18 @@ class Product < ApplicationRecord
     end
   end
 
-  MINIMUM_PERMALINK_LENGTH = 3
-
   def validate_words_in_permalink
-    words = permalink.split '-'
-    if words.size < MINIMUM_PERMALINK_LENGTH
+    words_count = permalink.split('-').size
+    if words_count < MINIMUM_PERMALINK_LENGTH
       errors.add :permalink, "should not have words less than 3"
     end
   end
 
-  MINIMUM_DESCRIPTION_LENGTH = 5
-  MAXIMUM_DECRIPTION_LENGTH = 10
-
   def validate_words_in_description
-    words = description.split(' ')
-    if words.size() < MINIMUM_DESCRIPTION_LENGTH
+    words_count = description.split(' ').size
+    if words_count < MINIMUM_DESCRIPTION_LENGTH
       errors.add :description, "should not have words less than 5"
-    elsif words.size() > MAXIMUM_DECRIPTION_LENGTH
+    elsif words_count > MAXIMUM_DECRIPTION_LENGTH
       errors.add :description, "should not have words greater than 10"
     end
   end
