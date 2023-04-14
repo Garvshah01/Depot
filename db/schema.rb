@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_05_125701) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_14_045618) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -60,13 +60,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_05_125701) do
 
   create_table "articles", force: :cascade do |t|
     t.string "name"
-    t.boolean "is_public?", default: true
+    t.boolean "is_public", default: true
   end
 
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "line_item_count", default: 0, null: false
+    t.integer "line_items_count"
   end
 
   create_table "line_items", force: :cascade do |t|
@@ -88,6 +89,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_05_125701) do
     t.integer "pay_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -125,5 +128,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_05_125701) do
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
+  add_foreign_key "orders", "users"
   add_foreign_key "support_requests", "orders"
 end

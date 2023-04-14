@@ -61,6 +61,14 @@ class UsersController < ApplicationController
     redirect_to users_url, notice: exception.message
   end
 
+  def orders
+    @order = User.find(session[:user_id]).orders
+  end
+
+  def line_Items
+    @line_Item = User.find(session[:user_id]).line_items.page(params[:page])
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

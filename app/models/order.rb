@@ -1,6 +1,8 @@
 class Order < ApplicationRecord
   require 'pago'
   has_many :line_items,dependent: :destroy
+  belongs_to :user
+  has_many :products, through: :line_items
 
   validates :name, :address, :email, presence: true
   # validates :pay_type, inclusion: pay_types.keys
@@ -47,4 +49,13 @@ class Order < ApplicationRecord
       raise payment_result.error
     end
   end
+
+  def total_price
+    total_amount = 0
+    line_items.each do |item|
+      total_amount += item.total_price
+    end
+    total_amount
+  end
+
 end
