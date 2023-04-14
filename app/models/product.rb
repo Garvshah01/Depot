@@ -23,6 +23,9 @@ class Product < ApplicationRecord
   has_many :orders, through: :line_items
   before_destroy :ensure_not_referenced_by_any_line_item
 
+  before_validation :set_name_default
+  before_validation :set_discount_price
+
   private
   def ensure_not_referenced_by_any_line_item
     unless line_items.empty?
@@ -45,5 +48,13 @@ class Product < ApplicationRecord
     elsif words_count > MAXIMUM_DECRIPTION_LENGTH
       errors.add :description, "should not have words greater than 10"
     end
+  end
+
+  def set_name_default
+    self.title ||= 'abc'
+  end
+
+  def set_discount_price
+    self.discount_price = price if discount_price == 0.0
   end
 end
