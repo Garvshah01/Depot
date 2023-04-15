@@ -1,7 +1,9 @@
 class User < ApplicationRecord
-  # paginates_per 5
 
   ADMIN_EMAIL = 'admin@depot.com'.freeze
+
+  has_many :orders, dependent: :destroy
+  has_many :line_items, through: :orders
 
   validates :name, presence: true, uniqueness: true
   has_secure_password
@@ -14,9 +16,6 @@ class User < ApplicationRecord
   before_destroy :ensure_not_admin
   after_destroy :ensure_an_admin_remains
   after_create_commit :send_welcome_mail
-
-  has_many :orders, dependent: :destroy
-  has_many :line_items, through: :orders
 
   class Error < StandardError
   end

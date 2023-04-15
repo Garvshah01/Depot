@@ -62,21 +62,18 @@ class UsersController < ApplicationController
   end
 
   def orders
-    @order = User.find(session[:user_id]).orders
+    current_user ? @order = current_user.orders : redirect_to_login
   end
 
   def line_Items
-    @line_Item = User.find(session[:user_id]).line_items.page(params[:page])
+    current_user ? @line_Item = current_user.line_items.page(params[:page]) :  redirect_to_login
   end
 
-
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end

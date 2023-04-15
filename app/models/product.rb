@@ -5,6 +5,10 @@ class Product < ApplicationRecord
   MINIMUM_DESCRIPTION_LENGTH = 5
   MAXIMUM_DECRIPTION_LENGTH = 10
 
+  has_many :line_items, dependent: :restrict_with_error
+  has_many :orders, through: :line_items
+  has_many :carts, through: :line_items
+
   validates :title, :description, :image_url, presence: true
   validates :title, uniqueness: true
   validates :image_url, url: true, allow_blank: true
@@ -19,9 +23,6 @@ class Product < ApplicationRecord
   validate :validate_words_in_permalink
   validate :validate_words_in_description
 
-  has_many :line_items, dependent: :restrict_with_error
-  has_many :orders, through: :line_items
-  has_many :carts, through: :line_items
   before_validation :set_name_default
   before_validation :set_discount_price
 
