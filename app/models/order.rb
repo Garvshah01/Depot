@@ -6,6 +6,8 @@ class Order < ApplicationRecord
 
   validates :name, :address, :email, presence: true
 
+  scope :by_date, Proc.new {|from, to| where created_at: (from||Date.today)..(to||Date.today) }
+
   enum pay_type:{
     'Check' => 0,
     'Credit Card' => 1,
