@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+
+  PAGINATION_LIMIT = 5
+
   before_action :set_user, only: %i[ show edit update destroy ]
 
   # GET /users or /users.json
@@ -62,11 +65,13 @@ class UsersController < ApplicationController
   end
 
   def orders
-    current_user ? @order = current_user.orders : redirect_to_login
+    @order = current_user.orders
   end
 
   def line_Items
-    current_user ? @line_Item = current_user.line_items.page(params[:page]) :  redirect_to_login
+    @page_number = params[:page] ? params[:page].to_i : 1
+    @total_pages = (current_user.line_items.count / PAGINATION_LIMIT).ceil
+    @line_Item = current_user.line_items.limit(PAGINATION_LIMIT).offset(PAGINATION_LIMIT * (@page_number - 1))
   end
 
   private
