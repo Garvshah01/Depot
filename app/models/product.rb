@@ -28,9 +28,13 @@ class Product < ApplicationRecord
 
   scope :enabled_products, -> { where enabled: true }
   scope :in_line_items, -> { joins(:line_items).distinct }
-  scope :title_in_line_items, -> { in_line_items.pluck(:title) }
 
   private
+
+  def self.title_in_line_items
+    in_line_items.pluck :title
+  end
+
   def validate_words_in_permalink
     words_count = permalink.split('-').size
     if words_count < MINIMUM_PERMALINK_LENGTH
