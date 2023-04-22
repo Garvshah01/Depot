@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+
+  PAGINATION_LIMIT = 5
+
   before_action :set_user, only: %i[ show edit update destroy ]
 
   # GET /users or /users.json
@@ -61,14 +64,21 @@ class UsersController < ApplicationController
     redirect_to users_url, notice: exception.message
   end
 
+  def orders
+    @order = current_user.orders
+  end
+
+  def line_Items
+    @page_number = params[:page] ? params[:page].to_i : 1
+    @total_pages = (current_user.line_items.count / PAGINATION_LIMIT).ceil
+    @line_Item = current_user.line_items.limit(PAGINATION_LIMIT).offset(PAGINATION_LIMIT * (@page_number - 1))
+  end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end

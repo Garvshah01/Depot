@@ -2,6 +2,9 @@ class User < ApplicationRecord
 
   ADMIN_EMAIL = 'admin@depot.com'.freeze
 
+  has_many :orders, dependent: :destroy
+  has_many :line_items, through: :orders
+
   validates :name, presence: true, uniqueness: true
   has_secure_password
   validates :email, uniqueness: true, allow_nil: true

@@ -1,9 +1,10 @@
 class Order < ApplicationRecord
   require 'pago'
+
+  belongs_to :user
   has_many :line_items,dependent: :destroy
 
   validates :name, :address, :email, presence: true
-  # validates :pay_type, inclusion: pay_types.keys
 
   enum pay_type:{
     'Check' => 0,
@@ -47,4 +48,9 @@ class Order < ApplicationRecord
       raise payment_result.error
     end
   end
+
+  def total_price
+    line_items.sum(&:total_price)
+  end
+
 end

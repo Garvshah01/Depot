@@ -5,6 +5,10 @@ class Product < ApplicationRecord
   MINIMUM_DESCRIPTION_LENGTH = 5
   MAXIMUM_DECRIPTION_LENGTH = 10
 
+  has_many :line_items, dependent: :restrict_with_error
+  has_many :orders, through: :line_items
+  has_many :carts, through: :line_items
+
   validates :title, :description, :image_url, presence: true
   validates :title, uniqueness: true
   validates :image_url, url: true, allow_blank: true
@@ -14,26 +18,15 @@ class Product < ApplicationRecord
   }
   validates :permalink, uniqueness: true, allow_nil: true
   validates :price, numericality: {greater_than_or_equal_to: 0.01}, if: :price
-  validates :price, comparison: { greater_than: :discount_price },  allow_nil: true
+  validates :price, comparison: { greater_than_or_equal_to: :discount_price },  allow_nil: true
   validates_with PriceValidator, if: :price
   validate :validate_words_in_permalink
   validate :validate_words_in_description
-
-  has_many :line_items
-  has_many :orders, through: :line_items
-  before_destroy :ensure_not_referenced_by_any_line_item
 
   before_validation :set_name_default
   before_validation :set_discount_price
 
   private
-  def ensure_not_referenced_by_any_line_item
-    unless line_items.empty?
-      errors.add(:base, 'Line Items present')
-      throw :abort
-    end
-  end
-
   def validate_words_in_permalink
     words_count = permalink.split('-').size
     if words_count < MINIMUM_PERMALINK_LENGTH

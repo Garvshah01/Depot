@@ -71,7 +71,6 @@ group :test do
   gem "webdrivers"
 end
 
-# gem 'sassc-rails', '~> 1.3'
 gem 'sassc-rails'
 gem 'webpacker'
 
