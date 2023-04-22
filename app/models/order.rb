@@ -6,7 +6,7 @@ class Order < ApplicationRecord
 
   validates :name, :address, :email, presence: true
 
-  scope :by_date, ->(from: DateTime.parse(Date.today.to_s), to: DateTime.now) { where created_at: from..to }
+  scope :by_date, -> (from: DateTime.now.at_beginning_of_day, to: DateTime.now) { where created_at: from..to }
 
   enum pay_type:{
     'Check' => 0,
