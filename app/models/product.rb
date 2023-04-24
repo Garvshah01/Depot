@@ -5,6 +5,7 @@ class Product < ApplicationRecord
   MINIMUM_DESCRIPTION_LENGTH = 5
   MAXIMUM_DECRIPTION_LENGTH = 10
 
+  belongs_to :category, counter_cache: true
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
@@ -25,8 +26,23 @@ class Product < ApplicationRecord
 
   before_validation :set_name_default
   before_validation :set_discount_price
+  after_create :increment_super_category_counter
+  # after_destroy :/decrement_super_category_counter
 
   private
+
+  def increment_super_category_counter
+    if category.super_category_id
+      category.super_category.increment!(:products_count,1)
+    end
+  end
+
+  def decrement_super_category_counter
+    if category || category.super_category_id
+      category.super_category.decrement!(:products_count,1)
+    end
+  end
+
   def validate_words_in_permalink
     words_count = permalink.split('-').size
     if words_count < MINIMUM_PERMALINK_LENGTH
