@@ -27,7 +27,7 @@ class Product < ApplicationRecord
   before_validation :set_name_default
   before_validation :set_discount_price
   after_create :increment_super_category_counter
-  # after_destroy :/decrement_super_category_counter
+  after_destroy :/decrement_super_category_counter
 
   private
 
