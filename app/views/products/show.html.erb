@@ -1,6 +1,7 @@
+<%= javascript_pack_tag 'image_slider' %>
 <p style="color: green"><%= notice %></p>
 
-<%= render @product %>
+<%= render @product, images: @images %>
 
 <div>
   <%= link_to "Edit this product", edit_product_path(@product) %> |

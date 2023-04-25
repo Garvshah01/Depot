@@ -31,7 +31,25 @@
     <div class="field">
       <%= form.label :password_confirmation, 'Confirm:' %>
       <%= form.password_field :password_confirmation, id: :user_password_confirmation, size: 40 %>
-
+    </div>
+    <%= form.fields_for :address do |user_address| %>
+    <div class="field">
+      <%= user_address.label :city, 'City:' %>
+      <%= user_address.text_field :city, size: 40 %>
+    </div>
+    <div class="field">
+      <%= user_address.label :state, 'State:' %>
+      <%= user_address.text_field :state, size: 40 %>
+    </div>
+    <div class="field">
+      <%= user_address.label :country, 'Country:' %>
+      <%= user_address.text_field :country, size: 40 %>
+    </div>
+    <div class="field">
+      <%= user_address.label :pincode, 'Pincode:' %>
+      <%= user_address.text_field :pincode, size: 40 %>
+    </div>
+    <% end %>
     <div>
       <%= form.submit %>
     </div>
