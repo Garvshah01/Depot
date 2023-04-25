@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   get 'sessions/create'
   get 'sessions/destroy'
 
-  get 'users/line_Items/(page/:page)', to: 'users#line_Items', as:'users/line_Items'
+  get 'users/line_Items', to: 'users#line_Items'
   get 'users/orders', to: 'users#orders'
 
   resources :users

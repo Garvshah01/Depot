@@ -1,18 +1,18 @@
 <h1>Orders</h1>
 <p style="color: green"><%= notice %></p>
 
-<%@order.each do |order|%>
+<% @order.each do |order| %>
   <%= render order%>
   <p>
     <strong> Items </strong><br>
     <% order.line_items.each do |item| %>
-      <%= render item%>
+      <%= render item %>
       <br>
     <% end %>
   </p>
   <p>
     <strong>Total amount: </strong>
-    <%= number_to_currency(order.total_price)%>
+    <%= number_to_currency(order.total_price) %>
   </p>
   <br>
-<%end%>
+<% end %>
