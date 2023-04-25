@@ -26,7 +26,15 @@ class Product < ApplicationRecord
   before_validation :set_name_default
   before_validation :set_discount_price
 
+  scope :enabled_products, -> { where enabled: true }
+  scope :in_line_items, -> { joins(:line_items).distinct }
+
   private
+
+  def self.title_in_line_items
+    in_line_items.pluck :title
+  end
+
   def validate_words_in_permalink
     words_count = permalink.split('-').size
     if words_count < MINIMUM_PERMALINK_LENGTH
