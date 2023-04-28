@@ -26,20 +26,20 @@ class Product < ApplicationRecord
 
   before_validation :set_name_default
   before_validation :set_discount_price
-  after_create :increment_super_category_counter
-  after_destroy :decrement_super_category_counter
+  after_create :increment_parent_category_counter
+  after_destroy :decrement_parent_category_counter
 
   private
 
-  def increment_super_category_counter
-    if category.super_category_id
-      category.super_category.increment!(:products_count,1)
+  def increment_parent_category_counter
+    if category.parent_category_id
+      category.parent_category.increment!(:products_count, 1)
     end
   end
 
-  def decrement_super_category_counter
-    if category || category.super_category_id
-      category.super_category.decrement!(:products_count,1)
+  def decrement_parent_category_counter
+    if category || category.parent_category_id
+      category.parent_category.decrement!(:products_count,1)
     end
   end
 

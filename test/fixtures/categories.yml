@@ -2,8 +2,8 @@
 
 one:
   name: MyString
-  super_category: one
+  parent_category: one
 
 two:
   name: MyString
-  super_category: two
+  parent_category: two

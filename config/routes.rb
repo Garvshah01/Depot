@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'categories/index'
+  resources :categories
 
   get 'admin' => 'admin#index'
   controller :sessions do

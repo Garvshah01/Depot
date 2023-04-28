@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_20_022606) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_28_130435) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -58,6 +58,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_20_022606) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "addresses", force: :cascade do |t|
+    t.string "state"
+    t.string "city"
+    t.string "country"
+    t.integer "pincode"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
   create_table "articles", force: :cascade do |t|
     t.string "name"
     t.boolean "is_public", default: true
@@ -71,11 +82,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_20_022606) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
-    t.integer "super_category_id"
+    t.integer "parent_category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "products_count"
-    t.index ["super_category_id"], name: "index_categories_on_super_category_id"
+    t.index ["parent_category_id"], name: "index_categories_on_parent_category_id"
   end
 
   create_table "line_items", force: :cascade do |t|
@@ -135,7 +146,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_20_022606) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "categories", "categories", column: "super_category_id"
+  add_foreign_key "addresses", "users"
+  add_foreign_key "categories", "categories", column: "parent_category_id"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
