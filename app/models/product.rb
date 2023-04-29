@@ -26,18 +26,18 @@ class Product < ApplicationRecord
 
   before_validation :set_name_default
   before_validation :set_discount_price
-  after_create :increment_parent_category_counter
-  after_destroy :decrement_parent_category_counter
+  after_create :increment_counter
+  after_destroy :decrement_counter
 
   private
 
-  def increment_parent_category_counter
+  def increment_counter
     if category.parent_category_id
       category.parent_category.increment!(:products_count, 1)
     end
   end
 
-  def decrement_parent_category_counter
+  def decrement_counter
     if category || category.parent_category_id
       category.parent_category.decrement!(:products_count,1)
     end
