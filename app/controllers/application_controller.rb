@@ -35,25 +35,25 @@ class ApplicationController < ActionController::Base
 
   def hit_counter
     session[:counter] ||= Hash.new
-    if session[:counter]["#{request_params[:controller]}##{request_params[:action]}"]
-      session[:counter]["#{request_params[:controller]}##{request_params[:action]}"] += 1
+    controller = params[:controller]
+    action = params[:action]
+
+    if session[:counter]["#{controller}##{action}"]
+      session[:counter]["#{controller}##{action}"] += 1
     else
-      session[:counter]["#{request_params[:controller]}##{request_params[:action]}"] = 1
+      session[:counter]["#{controller}##{action}"] = 1
     end
-    @hit_counter = session[:counter]["#{request_params[:controller]}##{request_params[:action]}"]
+    @hit_counter = session[:counter]["#{controller}##{action}"]
   end
 
   private
-  def request_params
-    params.permit(:controller, :action)
-  end
 
   def start_timer
-    response.header['start_time'] = Time.now
+    response.header['start_time'] = Time.current
   end
 
   def end_timer
-    response.header['end_time'] = Time.now
+    response.header['end_time'] = Time.current
   end
 
   def response_time

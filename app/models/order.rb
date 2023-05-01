@@ -12,6 +12,8 @@ class Order < ApplicationRecord
     'Purchase order' => 2
   }
 
+  scope :by_date, -> (from: DateTime.current.beginning_of_day, to: DateTime.current.end_of_day) { where created_at: from..to }
+
   def add_line_items_from_cart(cart)
     cart.line_items.each do |item|
       item.cart_id = nil

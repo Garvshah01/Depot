@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
     user = User.find_by(name: params[:name])
     if user&.authenticate(params[:password])
       session[:user_id] = user.id
-      if user.role == 'admin'
+      if admin?(user)
         redirect_to admin_reports_url
       else
         redirect_to admin_url
@@ -22,5 +22,11 @@ class SessionsController < ApplicationController
   def destroy
     session[:user_id] = nil
     redirect_to store_index_url, notice: "Logged out"
+  end
+
+  private
+
+  def admin?(user)
+    user.role == 'admin'
   end
 end
