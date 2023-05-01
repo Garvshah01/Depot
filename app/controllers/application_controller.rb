@@ -1,8 +1,10 @@
 class ApplicationController < ActionController::Base
 
   before_action :set_i18n_locale_from_params
-
-  before_action :authorize
+  before_action :start_timer
+  before_action :authorize, :hit_counter, :check_session_timout, :refresh_session_time
+  after_action :response_time
+  after_action :end_timer
 
   protected
   def authorize
@@ -29,6 +31,42 @@ class ApplicationController < ActionController::Base
 
   def redirect_to_login
     redirect_to login_url
+  end
+
+  def hit_counter
+    session[:counter] ||= Hash.new
+    if session[:counter]["#{request_params[:controller]}##{request_params[:action]}"]
+      session[:counter]["#{request_params[:controller]}##{request_params[:action]}"] += 1
+    else
+      session[:counter]["#{request_params[:controller]}##{request_params[:action]}"] = 1
+    end
+    @hit_counter = session[:counter]["#{request_params[:controller]}##{request_params[:action]}"]
+  end
+
+  private
+  def request_params
+    params.permit(:controller, :action)
+  end
+
+  def start_timer
+    response.header['start_time'] = Time.now
+  end
+
+  def end_timer
+    response.header['end_time'] = Time.now
+  end
+
+  def response_time
+    response.header['x-responded-in'] = (response.header['end_time'] - response.header['start_time'])*1000
+  end
+
+  def check_session_timout
+    session[:timeout] ||= Time.current + 5.minute
+    redirect_to sessions_destroy_path if session[:timeout] < Time.current
+  end
+
+  def refresh_session_time
+    session[:timeout] = Time.current + 5.minute
   end
 
 end

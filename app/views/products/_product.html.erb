@@ -1,6 +1,6 @@
 <div id="<%= dom_id product %>">
   <div class="slider">
-    <% images.each do |img| %>
+    <% product.product_image.each do |img| %>
       <%= image_tag img, class: 'slider-img' %>
     <% end %>
   </div>

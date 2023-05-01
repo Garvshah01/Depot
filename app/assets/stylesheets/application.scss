@@ -244,3 +244,11 @@ header.main {
     float: right;
     margin: 1em;
 }
+
+.bottomright {
+    position: fixed;
+    right: 0px; bottom: 0px;
+    // width: 200px;
+    // height:40px;
+    padding: 5px;
+  }
