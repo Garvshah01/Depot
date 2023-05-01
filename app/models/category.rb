@@ -7,13 +7,13 @@ class Category < ApplicationRecord
 
   validates :name, presence: true
   validates :name, uniqueness: { scope: :parent_category_id, case_sensitive: false }, allow_nil: true
-  validate :ensure_no_child_Of_sub_category
+  validate :ensure_no_child_of_sub_category
 
   scope :root, -> { where(parent_category_id: nil) }
 
   private
 
-  def ensure_no_child_Of_sub_category
+  def ensure_no_child_of_sub_category
     if parent_category && parent_category.parent_category_id
       errors.add :parent_category_id, message: 'is a sub category'
     end
