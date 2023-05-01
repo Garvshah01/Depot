@@ -1,16 +1,16 @@
 var imgs = document.getElementsByClassName('slider-img');
 console.log(imgs)
 var dots = document.getElementsByClassName('dot');
-var currentImg = 0; // index of the first image
-const interval = 3000; // duration of the slide
+var currentImg = 0;
+const interval = 3000;
 
 function changeSlide(n) {
-  for (var i = 0; i < imgs.length; i++) { // reset
+  for (var i = 0; i < imgs.length; i++) {
     imgs[i].style.opacity = 0;
     dots[i].className = dots[i].className.replace(' active', '');
   }
 
-  currentImg = (currentImg + 1) % imgs.length; // update the index number
+  currentImg = (currentImg + 1) % imgs.length;
 
   if (n != undefined) {
       clearInterval(timer);

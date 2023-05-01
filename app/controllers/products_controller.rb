@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
     @products = Product.all.order(:title)
     respond_to do |format|
       format.html
-      format.json { render :json => Product.joins(:category).select('products.title,categories.name') }
+      format.json { render json: Product.joins(:category).select('products.title, categories.name') }
     end
   end
 

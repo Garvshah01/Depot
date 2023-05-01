@@ -47,7 +47,7 @@
   </div>
   <div>
     <%= form.label :category_id, style: 'display: block' %>
-    <%= form.select :category_id, ([[['Select one', nil]]] << Category.all.collect { |c| [c.name, c.id] }).flatten(1) %>
+    <%= form.select :category_id, Category.all.collect { |c| [c.name, c.id] }, prompt: 'Select One' %>
   </div>
   <br>
   <div>
