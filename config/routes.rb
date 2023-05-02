@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :categories, only: [:index]
 
   get 'admin' => 'admin#index'
   controller :sessions do
@@ -6,8 +7,7 @@ Rails.application.routes.draw do
     post 'login' => :create
     delete 'logout' => :destroy
   end
-  # get 'admin/index'
-  # get 'sessions/new'
+
   get 'sessions/create'
   get 'sessions/destroy'
 
@@ -28,8 +28,4 @@ Rails.application.routes.draw do
     resources :carts
     root 'store#index', as:'store_index', via: :all
   end
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
 end

@@ -5,6 +5,7 @@ class Product < ApplicationRecord
   MINIMUM_DESCRIPTION_LENGTH = 5
   MAXIMUM_DECRIPTION_LENGTH = 10
 
+  belongs_to :category, counter_cache: true
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
@@ -25,11 +26,19 @@ class Product < ApplicationRecord
 
   before_validation :set_name_default
   before_validation :set_discount_price
+  after_create :product_increment_counter
+  after_destroy :product_decrement_counter
 
   scope :enabled_products, -> { where enabled: true }
-  scope :in_line_items, -> { joins(:line_items).distinct }
 
   private
+
+  def product_increment_counter
+    Category.increment_counter(:products_count, category.parent_category_id)
+  end
+
+  def product_decrement_counter
+    Category.decrement_counter(:products_count, category.parent_category_id)
 
   def self.title_in_line_items
     in_line_items.pluck :title
