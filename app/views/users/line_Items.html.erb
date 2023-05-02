@@ -2,5 +2,8 @@
 <% @line_Item.each do |line_item| %>
     <%= render line_item %>
 <br>
-<%= paginate @line_Item %>
 <% end %>
+<% unless @page_number == 1 %>
+  <%= link_to "prev page", "/users/line_Items?page=#{@page_number - 1}" %>
+<% end %>
+<%= link_to "next page", "/users/line_Items?page=#{@page_number + 1}" if @total_pages > @page_number %>

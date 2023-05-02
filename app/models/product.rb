@@ -29,6 +29,8 @@ class Product < ApplicationRecord
   after_create :product_increment_counter
   after_destroy :product_decrement_counter
 
+  scope :enabled_products, -> { where enabled: true }
+
   private
 
   def product_increment_counter
@@ -37,6 +39,9 @@ class Product < ApplicationRecord
 
   def product_decrement_counter
     Category.decrement_counter(:products_count, category.parent_category_id)
+
+  def self.title_in_line_items
+    in_line_items.pluck :title
   end
 
   def validate_words_in_permalink
