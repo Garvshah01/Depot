@@ -1,5 +1,4 @@
 var imgs = document.getElementsByClassName('slider-img');
-console.log(imgs)
 var dots = document.getElementsByClassName('dot');
 var currentImg = 0;
 const interval = 3000;
@@ -13,9 +12,9 @@ function changeSlide(n) {
   currentImg = (currentImg + 1) % imgs.length;
 
   if (n != undefined) {
-      clearInterval(timer);
-      timer = setInterval(changeSlide, interval);
-      currentImg = n;
+    clearInterval(timer);
+    timer = setInterval(changeSlide, interval);
+    currentImg = n;
   }
 
   imgs[currentImg].style.opacity = 1;
