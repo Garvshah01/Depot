@@ -1,0 +1,6 @@
+<% @orders.each do |order| %>
+    <%= t('.name') %>: <%= order.name %><br />
+    <%= t('.address') %> <%= order.address %><br />
+    Pay Type: <%= order.pay_type %><br />
+    <%= render partial: 'line_item', collection: order.line_items, locals: { locale: @language } %><br />
+<% end %>

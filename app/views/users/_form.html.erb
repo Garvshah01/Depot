@@ -15,7 +15,7 @@
 
     <h2>Enter User Details</h2>
     <div class="field">
-      <%= form.label :name, 'Name:' %>
+      <%= form.label :name, "#{t('.name')}:" %>
       <%= form.text_field :name, size: 40 %>
     </div>
 
@@ -34,7 +34,7 @@
     </div>
     <%= form.fields_for :address do |user_address| %>
     <div class="field">
-      <%= user_address.label :city, 'City:' %>
+      <%= user_address.label :city, "#{t('.city')}:" %>
       <%= user_address.text_field :city, size: 40 %>
     </div>
     <div class="field">

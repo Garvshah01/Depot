@@ -16,7 +16,7 @@
     <div class="actions">
         <%= button_to t('.empty'), cart, method: :delete,
                 data: { confirm: 'Are you sure?' } %>
-        <%= button_to t('.checkout'), new_order_path, method: :get,
+        <%= button_to t('.checkout'), new_order_path(locale: params[:locale]), method: :get,
                 class: "checkout"%>
     </div>
     <% end %>

@@ -32,7 +32,7 @@ class UsersController < ApplicationController
     @user.build_address(user_params[:address_attribute])
     respond_to do |format|
       if @user.save
-        format.html { redirect_to users_url, notice: "User #{@user.name} was successfully created." }
+        format.html { redirect_to users_url, notice: t('.notice',name: @user.name) }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -44,7 +44,8 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1 or /users/1.json
   def update
     respond_to do |format|
-      if @user.update(user_params) && @user.address.update(address_params)
+      debugger
+      if @user.update(user_params) && @user.address.update(user_params[:address_attributes])
         format.html { redirect_to users_url, notice: "User #{@user.name} was successfully updated." }
         format.json { render :show, status: :ok, location: @user }
       else
@@ -57,7 +58,6 @@ class UsersController < ApplicationController
   # DELETE /users/1 or /users/1.json
   def destroy
     @user.destroy
-
     respond_to do |format|
       format.html { redirect_to users_url, notice: "User #{@user.name} successfully destroyed." }
       format.json { head :no_content }
@@ -84,6 +84,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, address_attribute: [:city, :state, :country, :pincode])
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, address_attributes: [:city, :state, :country, :pincode])
     end
 end

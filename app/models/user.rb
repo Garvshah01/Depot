@@ -4,7 +4,7 @@ class User < ApplicationRecord
 
   has_many :orders, dependent: :destroy
   has_many :line_items, through: :orders
-  has_one :address, autosave: true
+  has_one :address, autosave: true, dependent: :destroy
   accepts_nested_attributes_for :address
 
   validates :name, presence: true, uniqueness: true

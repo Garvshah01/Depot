@@ -1,0 +1,121 @@
+hi:
+  order_mailer:
+    received:
+      subject: 'Pragmatic Store Order Confirmation Hindi'
+    line_item:
+      line_item: 'लाइन आइटम'
+      name: 'नाम'
+    all_orders:
+      subject: 'सभी orders'
+      name: 'नाम'
+      address: 'पता'
+
+  errors:
+    template:
+      body:        "निम्नलिखित क्षेत्रों के साथ समस्याएँ थीं"
+      header:
+        one:       "1 error prohibited this %{model} from being saved"
+        other:     "%{count} त्रुटियों ने इसे प्रतिबंधित कर दिया %{model} बनने से"
+
+  layouts:
+    application:
+      title:       "The Pragmatic Bookshelf"
+      home:        "मुख्य मेन्यू"
+      questions:   "सवाल"
+      news:        "समाचार"
+      contact:     'संपर्क'
+
+  carts:
+    create: "Cart was successfully created. Hindi"
+    update: "Cart was successfully updated. Hindi"
+    destroy: "Cart was successfully destroyed. Hindi"
+    cart:
+      title:       "Your Cart"
+      empty:       "Empty cart"
+      checkout:    "Checkout"
+
+  store:
+    index:
+      title_html:  "Your Pragmatic Catalog"
+      add_html:    "Add to Cart"
+
+  orders:
+    update:
+      notice: "आदेश सफलतापूर्वक बनाया गया था"
+    destroy:
+      notice: "Order was successfully destroyed. Hindi"
+    new:
+      legend:       "Please Enter Your Details"
+      notice: 'Your cart is empty Hindi'
+    form:
+      name:         "Name"
+      address_html: "Address"
+      email:        "E-mail"
+      pay_type:     "Pay with"
+      pay_prompt_html: "Select a payment method"
+      submit:       "Place Order"
+      pay_types:
+        check:           "Check"
+        credit_card:     "Credit Card"
+        purchase_order:  "Purchase Order"
+      check_pay_type:
+        routing_number: "Routing #"
+        account_number: "Account #"
+      credit_card_pay_type:
+        cc_number: "CC #"
+        expiration_date: "Expiry"
+      purchase_order_pay_type:
+        po_number: "PO #"
+  activerecord:
+    attributes:
+      order:
+        email: 'ईमेल'
+      user:
+        name: 'नाम'
+    errors:
+      models:
+        order:
+          attributes:
+            name:
+              blank: 'खाली नहीं हो सकता'
+            email:
+              blank: 'खाली नहीं हो सकता'
+            address:
+              blank: 'खाली नहीं हो सकता'
+            line_items:
+              invalid: 'खाली नहीं हो सकता'
+        user:
+          attributes:
+            name:
+              taken: 'खाली नहीं हो सकता'
+            email:
+              invalid: 'invalid in hindi'
+  users:
+    form:
+      name: 'नाम'
+      city: 'शहर'
+    create:
+      notice: "उपयोगकर्ता %{name} सफलतापूर्वक बनाया गया है।"
+    update:
+      notice: "उपयोगकर्ता %{name} सफलतापूर्वक change ho गया है।"
+
+  products:
+    create:
+      notice: "Product was successfully created. Hindi"
+    update:
+      notice: "Product was successfully updated. Hindi"
+    destroy:
+      notice: "Product was successfully destroyed. Hindi"
+
+  line_items:
+    update:
+      notice: "Line item was successfully updated. Hindi"
+    destroy:
+      notice: "Line item was successfully destroyed. Hindi"
+  categories:
+    products:
+      notice: "Category doesn't exist Hindi"
+
+
+
+

@@ -1,0 +1,13 @@
+<h1><%= t(".line_item") %></h1>
+<p>
+  <%= t('.name') %>: <%= line_item.product.title %><br>
+  Description: <%= line_item.product.description %><br>
+  Price: <%= line_item.product.price %><br>
+</p>
+<p>
+  <% unless attachments.blank? %>
+    Images <br>
+    <% img = line_item.product.product_image.first %>
+    <%= image_tag attachments["#{img.record_id}#{img.id}"].url %>
+  <% end %>
+</p>

@@ -5,7 +5,7 @@ class Admin::CategoriesController < Admin::AdminBaseController
 
   def products
     category = Category.find_by(id: params[:category_id])
-    redirect_to admin_categories_path, notice: "Category doesn't exist" and return unless category
+    redirect_to admin_categories_path, notice: t('.notice') and return unless category
     @products = category.subcategories_products.or(category.products)
   end
 end

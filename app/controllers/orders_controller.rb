@@ -38,7 +38,7 @@ class OrdersController < ApplicationController
 
   # POST /orders or /orders.json
   def create
-    @order = Order.new(order_params)
+    @order = User.find_by(id: session[:user_id]).orders.new(order_params)
     @order.add_line_items_from_cart(@cart)
 
     respond_to do |format|
@@ -59,7 +59,7 @@ class OrdersController < ApplicationController
   def update
     respond_to do |format|
       if @order.update(order_params)
-        format.html { redirect_to order_url(@order), notice: "Order was successfully updated." }
+        format.html { redirect_to order_url(@order), notice: t('.notice')  }
         format.json { render :show, status: :ok, location: @order }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -73,7 +73,7 @@ class OrdersController < ApplicationController
     @order.destroy
 
     respond_to do |format|
-      format.html { redirect_to orders_url, notice: "Order was successfully destroyed." }
+      format.html { redirect_to orders_url, notice: t('.notice') }
       format.json { head :no_content }
     end
   end
@@ -91,7 +91,7 @@ class OrdersController < ApplicationController
 
     def ensure_cart_isnt_empty
       if @cart.line_items.empty?
-        redirect_to store_index_url, notice: 'Your caet is empty'
+        redirect_to store_index_url, notice: t('.notice')
       end
     end
 end
