@@ -44,7 +44,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1 or /users/1.json
   def update
     respond_to do |format|
-      if @user.update(user_params) && @user.address.update(address_params)
+      if @user.update(user_params)
         format.html { redirect_to users_url, notice: "User #{@user.name} was successfully updated." }
         format.json { render :show, status: :ok, location: @user }
       else
@@ -84,6 +84,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, address_attribute: [:city, :state, :country, :pincode])
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, address_attributes: [:city, :state, :country, :pincode])
     end
 end

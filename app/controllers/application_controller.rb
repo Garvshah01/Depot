@@ -35,15 +35,14 @@ class ApplicationController < ActionController::Base
 
   def hit_counter
     session[:counter] ||= Hash.new
-    controller = params[:controller]
-    action = params[:action]
+    name = "#{params[:controller]}##{params[:action]}"
 
-    if session[:counter]["#{controller}##{action}"]
-      session[:counter]["#{controller}##{action}"] += 1
+    if session[:counter][name]
+      session[:counter][name] += 1
     else
-      session[:counter]["#{controller}##{action}"] = 1
+      session[:counter][name] = 1
     end
-    @hit_counter = session[:counter]["#{controller}##{action}"]
+    @hit_counter = session[:counter][name]
   end
 
   private
