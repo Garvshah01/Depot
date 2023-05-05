@@ -1,23 +1,32 @@
- <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
- <td class="image">
- <%= image_tag((product.product_image.attached? ? product.product_image.first : product.image_url) , class: "image", style: 'width: ') %>
- </td>
- <td class="description">
-<h1><%= product.title %></h1>
-<p>
-<%= truncate(strip_tags(product.description), length: 80) %>
-</p>
-</td>
-<td class="actions">
-<ul>
-<li><%= link_to 'Show', product %></li>
-<li><%= link_to 'Edit', edit_product_path(product) %></li>
-<li>
-<%= link_to 'Destroy',
-product,
-method: :delete,
-data: { confirm: 'Are you sure?' } %>
-</li>
-</ul>
-</td>
+<tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+  <td class="image">
+    <%= image_tag((product.product_image.attached? ? product.product_image.first
+    : product.image_url) , class: "image", style: 'width: ') %>
+  </td>
+  <td class="description">
+    <h1><%= product.title %></h1>
+    <p><%= truncate(strip_tags(product.description), length: 80) %></p>
+  </td>
+  <td>
+    <p class="rate_product" , id="rate_product_<%= product.id %>">
+      Rate: <%= select_tag('rating', options_for_select(ratings_list), prompt:
+      'Select Something') %>
+    </p>
+    <p>
+      Average Rating:
+      <span id="avg_rating_<%= product.id %>">
+        <%= product.avg_rating %>/5
+      </span>
+    </p>
+  </td>
+  <td class="actions">
+    <ul>
+      <li><%= link_to 'Show', product %></li>
+      <li><%= link_to 'Edit', edit_product_path(product) %></li>
+      <li>
+        <%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are
+        you sure?' } %>
+      </li>
+    </ul>
+  </td>
 </tr>

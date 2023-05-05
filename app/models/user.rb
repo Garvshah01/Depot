@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :line_items, through: :orders
   has_one :address, autosave: true, dependent: :destroy
   accepts_nested_attributes_for :address
+  has_many :ratings
+  has_many :products, through: :ratings
 
   validates :name, presence: true, uniqueness: true
   has_secure_password

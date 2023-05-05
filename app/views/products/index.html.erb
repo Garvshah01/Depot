@@ -1,18 +1,38 @@
+<script type="text/javascript">
+
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+  }
+});
+
+$(document).ready(function() {
+  $('select#rating').on('change', function() {
+    var selectedValue = $(this).val();
+    var product_id = $(this).parent().prop('id');
+    $.post('/ratings/get_rating_data', { product: product_id, rating: selectedValue }, function(data) {
+      var avg_rating = document.getElementById(data.span_id)
+      if (data.success) {
+        avg_rating.textContent = data.avr
+      } else {
+      }
+    });
+  });
+});
+</script>
+
 <% if notice %>
- <aside id="notice"><%= notice %></aside>
+<aside id="notice"><%= notice %></aside>
 <% end %>
 <h1>Products</h1>
 <table>
-<tfoot>
-<tr>
- <td colspan="3">
- <%= link_to 'New Product', new_product_path %>
-</td>
-</tr>
-</tfoot>
-<tbody>
- <% @products.each do |product_item| %>
-   <%= render 'product_options', product: product_item %>
-<% end %>
-</tbody>
+  <tfoot>
+    <tr>
+      <td colspan="3"><%= link_to 'New Product', new_product_path %></td>
+    </tr>
+  </tfoot>
+  <tbody>
+    <% @products.each do |product_item| %> <%= render 'product_options',
+    product: product_item, ratings_list: @ratings %> <% end %>
+  </tbody>
 </table>

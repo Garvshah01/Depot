@@ -8,6 +8,7 @@ constraints( -> (req) { req.env['HTTP_USER_AGENT'] !~ /Firefox\// } ) do
     delete 'logout' => :destroy
   end
 
+  post 'ratings/get_rating_data'
   get 'sessions/create'
   get 'sessions/destroy'
 
