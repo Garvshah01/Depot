@@ -13,6 +13,7 @@
 <%= javascript_pack_tag 'locale_switcher', 'data-turbolinks-track': 'reload' %>
 </head>
 <body>
+
 <header class="main">
 
 <aside>
@@ -59,5 +60,9 @@
     <%= yield %>
 </main>
 </section>
+<div class="bottomright">
+  <p><%= @hit_counter %> hits</p>
+  <p>Your IP address is: <%= request.remote_ip %></p>
+</div>
 </body>
 </html>

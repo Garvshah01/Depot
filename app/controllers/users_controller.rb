@@ -2,6 +2,8 @@ class UsersController < ApplicationController
 
   PAGINATION_LIMIT = 5
 
+  layout 'users'
+
   before_action :set_user, only: %i[ show edit update destroy ]
 
   # GET /users or /users.json
@@ -16,16 +18,18 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    @user.build_address
   end
 
   # GET /users/1/edit
   def edit
+    @address = @user.address
   end
 
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
-
+    @user.build_address(user_params[:address_attribute])
     respond_to do |format|
       if @user.save
         format.html { redirect_to users_url, notice: "User #{@user.name} was successfully created." }
@@ -80,6 +84,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, address_attributes: [:city, :state, :country, :pincode])
     end
 end

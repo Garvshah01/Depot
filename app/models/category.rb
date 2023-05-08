@@ -1,5 +1,7 @@
 class Category < ApplicationRecord
 
+  scope :product_of_subcategory, -> { sub_categories.products }
+
   belongs_to :parent_category, class_name: "Category", optional: true
   has_many :products, dependent: :restrict_with_error
   has_many :sub_categories, class_name: "Category", foreign_key: "parent_category_id", dependent: :destroy

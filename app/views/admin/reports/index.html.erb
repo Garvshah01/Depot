@@ -1,0 +1,16 @@
+<h3> Select Date </h3>
+<%= form_with url: admin_reports_path do |form| %>
+    <p>
+        <%= form.label 'From'%>
+        <%= form.date_field :from_date %>
+    </p>
+    <p>
+        <%= form.label 'To'%>
+        <%= form.date_field :to_date %>
+    </p>
+    <%= form.submit 'Search'%>
+<% end %>
+<br>
+<% @orders.each do |order| %>
+    <%= render 'orders/order', order: order %>
+<% end %>

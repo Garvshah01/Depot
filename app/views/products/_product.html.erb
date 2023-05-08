@@ -1,4 +1,14 @@
 <div id="<%= dom_id product %>">
+  <div class="slider">
+    <% product.product_image.each do |img| %>
+      <%= image_tag img, class: 'slider-img' %>
+    <% end %>
+  </div>
+  <div class= "navigation-button">
+    <span class= "dot active"></span>
+    <span class= "dot"></span>
+    <span class= "dot"></span>
+  </div>
   <p>
     <strong>Title:</strong>
     <%= product.title %>
