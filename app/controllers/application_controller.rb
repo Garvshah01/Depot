@@ -27,16 +27,12 @@ class ApplicationController < ActionController::Base
   end
 
   def set_i18n_language(&action)
-    if current_user
-      language = LANGUAGES.to_h[current_user.language]
-      I18n.with_locale(language,&action)
-    else
-      yield
-    end
+    language = current_user ? LANGUAGES.to_h[current_user.language] : I18n.default_locale
+    I18n.with_locale(language, &action)
   end
 
   def current_user
-    User.find_by(id: session[:user_id])
+    @current_user ||= User.find_by(id: session[:user_id])
   end
 
   def redirect_to_login

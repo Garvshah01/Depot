@@ -38,7 +38,7 @@ class OrdersController < ApplicationController
 
   # POST /orders or /orders.json
   def create
-    @order = User.find_by(id: session[:user_id]).orders.new(order_params)
+    @order = current_user.orders.new(order_params)
     @order.add_line_items_from_cart(@cart)
 
     respond_to do |format|

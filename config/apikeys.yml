@@ -1,0 +1,7 @@
+default: &default
+  user_name: "garvshah01"
+  password: "dbomppjiwwikftyh"
+
+development:
+  <<: *default
+
