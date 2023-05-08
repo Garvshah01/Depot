@@ -1,10 +1,12 @@
 class Order < ApplicationRecord
   require 'pago'
 
-  has_many :line_items,dependent: :destroy
   belongs_to :user
+  has_many :line_items,dependent: :destroy
 
   validates :name, :address, :email, presence: true
+
+  scope :by_date, -> (from: DateTime.current.beginning_of_day, to: DateTime.current.end_of_day) { where created_at: from..to }
 
   enum pay_type:{
     'Check' => 0,
@@ -52,7 +54,7 @@ class Order < ApplicationRecord
   end
 
   def total_price
-    line_items.sum { |i| i.total_price }
+    line_items.sum(&:total_price)
   end
 
 end
