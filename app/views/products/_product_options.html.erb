@@ -1,8 +1,6 @@
 <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
   <td class="image">
-    <% images = product.product_image.attached? ? product.product_image.first : product.image_url
-    product.image_url %> <%= image_tag(images, class: "image", style: 'width: ')
-    %>
+    <%= image_tag(product.select_image, class: "image", style: 'width: ') %>
   </td>
   <td class="description">
     <h1><%= product.title %></h1>
@@ -13,8 +11,7 @@
       <li><%= link_to 'Show', product %></li>
       <li><%= link_to 'Edit', edit_product_path(product) %></li>
       <li>
-        <%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are
-        you sure?' } %>
+        <%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %>
       </li>
     </ul>
   </td>
