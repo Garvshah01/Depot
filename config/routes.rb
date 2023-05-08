@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-
-constraints( -> (req) { req.env['HTTP_USER_AGENT'] !~ /Firefox\// } ) do
+constraints( -> (req) { !req.env['HTTP_USER_AGENT'].match?(/Firefox\//) } ) do
   get 'admin' => 'admin#index'
   controller :sessions do
     get 'login' => :new
