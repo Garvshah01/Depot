@@ -11,6 +11,8 @@ class Product < ApplicationRecord
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
   has_many_attached :product_image, dependent: :purge
+  has_many :ratings
+  has_many :users, through: :ratings
 
   validates :title, :description, :image_url, presence: true
   validates :title, uniqueness: true
@@ -32,6 +34,10 @@ class Product < ApplicationRecord
   before_validation :set_discount_price
   after_create :increment_parent_category_counter
   after_destroy :decrement_parent_category_counter
+
+  def avg_rating
+    ratings.average(:rating).to_f
+  end
 
   private
 
@@ -70,4 +76,5 @@ class Product < ApplicationRecord
   def set_discount_price
     self.discount_price = price if discount_price == 0.0
   end
+
 end
