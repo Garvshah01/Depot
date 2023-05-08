@@ -43,6 +43,7 @@ class Product < ApplicationRecord
 
   def product_decrement_counter
     Category.decrement_counter(:products_count, category.parent_category_id)
+  end
 
   def self.title_in_line_items
     in_line_items.pluck :title

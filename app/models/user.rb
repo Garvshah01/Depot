@@ -36,4 +36,8 @@ class User < ApplicationRecord
   def send_welcome_mail
     UserMailer.welcome_email(self).deliver_later
   end
+
+  def admin?
+    role == 'admin'
+  end
 end
