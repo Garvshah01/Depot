@@ -30,21 +30,23 @@ class Product < ApplicationRecord
 
   before_validation :set_name_default
   before_validation :set_discount_price
-  after_create :increment_super_category_counter
-  after_destroy :decrement_super_category_counter
+  after_create :product_increment_counter
+  after_destroy :product_decrement_counter
+
+  scope :enabled_products, -> { where enabled: true }
 
   private
 
-  def increment_super_category_counter
-    if category.super_category_id
-      category.super_category.increment!(:products_count,1)
-    end
+  def product_increment_counter
+    Category.increment_counter(:products_count, category.parent_category_id)
   end
 
-  def decrement_super_category_counter
-    if category || category.super_category_id
-      category.super_category.decrement!(:products_count,1)
-    end
+  def product_decrement_counter
+    Category.decrement_counter(:products_count, category.parent_category_id)
+  end
+
+  def self.title_in_line_items
+    in_line_items.pluck :title
   end
 
   def validate_words_in_permalink
