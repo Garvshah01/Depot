@@ -8,8 +8,16 @@ class Category < ApplicationRecord
   has_many :subcategories_products, through: :sub_categories, source: :products, dependent: :restrict_with_error
 
   validates :name, presence: true
-  validates :name, uniqueness: true, if: :parent_category, unless: :name.nil?
-  validates :name, uniqueness: { scope: :parent_category_id}, unless: :name.nil?
-  validates_with NoChildOfSubCategoryValidator
+  validates :name, uniqueness: { scope: :parent_category_id, case_sensitive: false }, allow_nil: true
+  validate :ensure_no_child_of_sub_category
 
+  scope :root, -> { where(parent_category_id: nil) }
+
+  private
+
+  def ensure_no_child_of_sub_category
+    if parent_category && parent_category.parent_category_id
+      errors.add :parent_category_id, message: 'is a sub category'
+    end
+  end
 end
