@@ -4,6 +4,8 @@ class User < ApplicationRecord
 
   has_many :orders, dependent: :destroy
   has_many :line_items, through: :orders
+  has_one :address, autosave: true, dependent: :destroy
+  accepts_nested_attributes_for :address
 
   validates :name, presence: true, uniqueness: true
   has_secure_password
@@ -28,7 +30,7 @@ class User < ApplicationRecord
   end
 
   def ensure_not_admin
-    throw :abort unless self.email == ADMIN_EMAIL
+    throw :abort if self.email == ADMIN_EMAIL
   end
 
   def send_welcome_mail

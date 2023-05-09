@@ -4,11 +4,14 @@ class Product < ApplicationRecord
   MINIMUM_PERMALINK_LENGTH = 3
   MINIMUM_DESCRIPTION_LENGTH = 5
   MAXIMUM_DECRIPTION_LENGTH = 10
+  MINIMUM_IMAGES_COUNT = 1
+  MAXIMUM_IMAGES_COUNT = 3
 
   belongs_to :category, counter_cache: true
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
+  has_many_attached :product_image, dependent: :purge
 
   validates :title, :description, :image_url, presence: true
   validates :title, uniqueness: true
@@ -23,6 +26,8 @@ class Product < ApplicationRecord
   validates_with PriceValidator, if: :price
   validate :validate_words_in_permalink
   validate :validate_words_in_description
+  validates :category_id, presence: true
+  validates :product_image, length: { minimum: MINIMUM_IMAGES_COUNT, maximum: MAXIMUM_IMAGES_COUNT, too_long: "count should not greater than 3", too_short: 'count should be there'}
 
   before_validation :set_name_default
   before_validation :set_discount_price
@@ -30,6 +35,10 @@ class Product < ApplicationRecord
   after_destroy :product_decrement_counter
 
   scope :enabled_products, -> { where enabled: true }
+
+  def select_image
+    product_image.attached? ? product_image.first : image_url
+  end
 
   private
 
@@ -39,6 +48,7 @@ class Product < ApplicationRecord
 
   def product_decrement_counter
     Category.decrement_counter(:products_count, category.parent_category_id)
+  end
 
   def self.title_in_line_items
     in_line_items.pluck :title
